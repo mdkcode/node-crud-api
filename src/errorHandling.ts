@@ -1,23 +1,21 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { User } from "./data.js";
+import { User } from "./utils.js";
 
 export function onError(
   users: User[],
   userId: string,
   res: ServerResponse<IncomingMessage>
-): boolean {
+) {
   const uuidIsValid = isValidUuid(userId);
   const certainUser = users.find(({ id }) => id === userId);
   if (userId) {
     if (!uuidIsValid) {
-      handleErrorMessage(400, res, "UserId is invalid");
-      return true;
+      return handleErrorMessage(400, res, "UserId is invalid");
     } else if (!certainUser) {
-      handleErrorMessage(404, res, "User not found");
-      return true;
+      return handleErrorMessage(404, res, "User not found");
     }
   }
-  return false;
+  return;
 }
 
 export function handleErrorMessage(
